@@ -1,7 +1,6 @@
 import subprocess
 import time
 
-"""
 from luma.core.interface.serial import i2c
 from luma.core.render import canvas
 from luma.oled.device import sh1106
@@ -44,7 +43,6 @@ def text2(text1, text2):
         draw.text((10, 30), text2, fill="white")
 
 text2("Mode Select", "Record or Inference")
-"""
 
 
 print("Mode Select")
@@ -54,6 +52,19 @@ interval = 0.3
 
 print("1:record 2:inference")
 n = int(input())
+
+
+def y_n():
+    while True:
+        if (GPIO.input(gpio_sw_res) == 0) & (status == 0) & (time.time() - pressed_time > interval):
+            status = 1
+            pressed_time = time.time()
+            ans = "n"
+        elif (GPIO.input(gpio_sw_st) == 0) & (status == 0) & (time.time() - pressed_time > interval):
+            status = 1
+            pressed_time = time.time()
+            ans = "y"
+        
 
 
 while True:
