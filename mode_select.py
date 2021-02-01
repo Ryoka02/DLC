@@ -61,10 +61,10 @@ while True:
     if (n == 1) & (status == 0) & (time.time() - pressed_time > interval):
         status = 1
         pressed_time = time.time()
-        #text2("Recording?", "Yes or No")
-        print("Record?")
 
         while True:
+            #text2("Recording?", "Yes or No")
+            print("Record?")
             n = input("Yes or No")
             #if (GPIO.input(gpio_sw_res) == 0) & (status == 1) & (time.time() - pressed_time > interval):
             if (n == "Yes") & (status == 1) & (time.time() - pressed_time > interval):
@@ -78,7 +78,19 @@ while True:
                 while True:
                     #if (GPIO.input(gpio_sw_res) == 0) & (status == 2) & (time.time() - pressed_time > interval):
                     if (n == "Yes") & (status == 2) & (time.time() - pressed_time > interval):
-                    status = 3
+                        status = 3
+                        break
+                    
+                    #elif (GPIO.input(gpio_sw_st) == 0) & (status == 2) & (time.time() - pressed_time > interval):
+                    elif (n == "No") & (status == 2) & (time.time() - pressed_time > interval):
+                        status = 3
+                        #text1("Please shutdown")
+                        print("Please shutdown")
+                        break
+                    
+                    else:
+                        status = 2
+                        
 
             
             #elif (GPIO.input(gpio_sw_st) == 0) & (status == 1) & (time.time() - pressed_time > interval):
