@@ -33,18 +33,16 @@ GPIO.setup(gpio_sw_st, GPIO.IN)
 GPIO.output(gpio_led, 0) 
 ########
 
+
 def text1(text):
     with canvas(device, dither=True) as draw:
         draw.text((10, 20), text, fill="white")
+
 
 def text2(text1, text2):
     with canvas(device, dither=True) as draw:
         draw.text((10, 20), text1, fill="white")
         draw.text((10, 30), text2, fill="white")
-
-status = 0
-pressed_time = time.time()
-interval = 0.3
 
 
 def y_n():
@@ -62,8 +60,21 @@ def y_n():
         else:
             status = 0
     return ans
+
+
+status = 0
+pressed_time = time.time()
+interval = 0.3
         
 text2("Mode Select", "Record or Inference")
+rep = y_n()
+
+if rep == "n":
+    text2("Record?", "Yes or No") 
+    rep = y_n()
+    if rep == "" 
+    
+
 
 while True:
     #if (GPIO.input(gpio_sw_res) == 0) & (status == 0) & (time.time() - pressed_time > interval):
