@@ -46,6 +46,8 @@ def text2(text1, text2):
 
 
 def y_n():
+    status = 0
+    pressed_time = time.time()
     while True:
         if (GPIO.input(gpio_sw_res) == 0) & (status == 0) & (time.time() - pressed_time > interval):
             status = 1
@@ -62,9 +64,16 @@ def y_n():
     return ans
 
 
-status = 0
-pressed_time = time.time()
-interval = 0.3
+def rec_loop():
+    while True:
+        again = y_n() 
+        if again == "y":
+            subprocess.run("sudo python3 /home/stada/DLC/record.py", shell=True)
+            text2("Record again?", "Yes or No")
+        else:
+            text
+
+
         
 text2("Mode Select", "Record or Inference")
 rep = y_n()
@@ -72,8 +81,8 @@ rep = y_n()
 if rep == "n":
     text2("Record?", "Yes or No") 
     rep = y_n()
-    if rep == "" 
-    
+    if rep == "y":
+        
 
 
 while True:
