@@ -42,16 +42,9 @@ def text2(text1, text2):
         draw.text((10, 20), text1, fill="white")
         draw.text((10, 30), text2, fill="white")
 
-text2("Mode Select", "Record or Inference")
-
-
-print("Mode Select")
 status = 0
 pressed_time = time.time()
 interval = 0.3
-
-print("1:record 2:inference")
-n = int(input())
 
 
 def y_n():
@@ -60,12 +53,17 @@ def y_n():
             status = 1
             pressed_time = time.time()
             ans = "n"
+            break
         elif (GPIO.input(gpio_sw_st) == 0) & (status == 0) & (time.time() - pressed_time > interval):
             status = 1
             pressed_time = time.time()
             ans = "y"
+            break
+        else:
+            status = 0
+    return ans
         
-
+text2("Mode Select", "Record or Inference")
 
 while True:
     #if (GPIO.input(gpio_sw_res) == 0) & (status == 0) & (time.time() - pressed_time > interval):
