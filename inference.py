@@ -85,8 +85,10 @@ rec_name = videolist[0]
 inference(rec_name)
 change_fps(rec_name)
 
-proc = subprocess.run("ls /media/stada", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
-dir_usb = "/media/stada/" + proc.stdout.decode("utf8")
-subprocess.run("sudo mv /home/stada/tmp/{} {}".format(rec_name, dir_usb), shell = True)
+subprocess.run("sudo mv /home/stada/tmp/{} /home/stada/temp".format(rec_name), shell = True)
+
+#proc = subprocess.run("ls /media/stada", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
+#dir_usb = "/media/stada/" + proc.stdout.decode("utf8")
+#subprocess.run("sudo mv /home/stada/tmp/{} {}".format(rec_name, dir_usb), shell = True)
 
 
