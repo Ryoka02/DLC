@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 ####### utils ===============
 import time
 import sys
