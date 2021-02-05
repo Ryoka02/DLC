@@ -13,20 +13,19 @@
 ##########################################
 
 
-####### utils ===============
+######## utils ########
 import time
 import sys
 import datetime
 import os
 import subprocess
 
-####### hard
+######## hard ########
 from luma.core.interface.serial import i2c
 from luma.core.render import canvas
 from luma.oled.device import sh1106
-import RPi.GPIO as GPIO 
 
-######## dlc
+######## dlc ########
 import cv2
 import numpy as np
 from tqdm import tqdm
@@ -34,21 +33,14 @@ WINDOW_NAME = 'Camera Test'
 import pandas as pd
 import deeplabcut
 
-#### config ####
-gpio_led = 8
-gpio_sw_1 = 21
-gpio_sw_10 = 20
-gpio_sw_60 = 16
-gpio_sw_res = 12
-gpio_sw_st = 7
-
-interval = 0.3
-dir_media = "/media/stada/"
-
+#### devices set up ####
 serial = i2c(port=1, address=0x3C)
 device = sh1106(serial)
-################
+subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell = True)
 
+
+
+######## def ########
 def text1(text):
     #textを1行表示
     with canvas(device, dither=True) as draw:
@@ -73,7 +65,7 @@ def inference(rec_name):
     #df = pd.read_csv("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500.csv".format(rec_name))
     #df.to_pickle("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500_meta.pickle".format(rec_name))
     #df.to_hdf("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500.h5".format(rec_name), key='df')
-    deeplabcut.create_labeled_video(path_config_file, videofile_path, draw_skeleton=True)
+    #deeplabcut.create_labeled_video(path_config_file, videofile_path, draw_skeleton=True)
     # deeplabcut.convert_detections2tracklets(path_config_file,videofile_path, videotype="mp4", track_method='skeleton')
     # deeplabcut.convert_raw_tracks_to_h5()
     # deeplabcut.plot_trajectories(path_config_file,videofile_path, videotype="mp4", track_method='skeleton')
@@ -97,18 +89,20 @@ def change_fps(name):
     text1("Convert finish!")
 
 
+
+######## inference ########
 proc = subprocess.run("ls /home/stada/tmp", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
 output = proc.stdout.decode("utf8")
 videolist = output.split("\n")
 rec_name = videolist[0]
 
 inference(rec_name)
-change_fps(rec_name)
-
-subprocess.run("sudo mv /home/stada/tmp/{} /home/stada/temp".format(rec_name), shell = True)
+#change_fps(rec_name)
 
 #proc = subprocess.run("ls /media/stada", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
-#dir_usb = "/media/stada/" + proc.stdout.decode("utf8")
-#subprocess.run("sudo mv /home/stada/tmp/{} {}".format(rec_name, dir_usb), shell = True)
-
-
+#usb_name = proc.stdout.decode("utf8")
+#usblist = usb_name.split("\n")
+#usb_name = usblist[0]
+#dir_usb = "/media/stada/{}".format(usb_name)
+subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell = True)
+subprocess.run("sudo umount /media/stada/dlc_stada")
