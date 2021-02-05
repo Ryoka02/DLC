@@ -54,9 +54,6 @@ GPIO.setup(gpio_sw_st, GPIO.IN)
 GPIO.output(gpio_led, 0) 
 ########
 
-proc = subprocess.run("ls /media/stada", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
-dir_usb = "/media/stada/" + proc.stdout.decode("utf8")
-
 def cleanup():
     serial = i2c(port=1, address=0x3C)
     device = sh1106(serial)
@@ -73,21 +70,8 @@ def cleanup():
     GPIO.setup(gpio_sw_60, GPIO.IN)
     GPIO.setup(gpio_sw_res, GPIO.IN)
     GPIO.setup(gpio_sw_st, GPIO.IN)
+    GPIO.output(gpio_led, 0) 
 
-def sw_cleanup():
-    GPIO.cleanup(gpio_led)
-    GPIO.cleanup(gpio_sw_1)
-    GPIO.cleanup(gpio_sw_10)
-    GPIO.cleanup(gpio_sw_60)
-    GPIO.cleanup(gpio_sw_res)
-    GPIO.cleanup(gpio_sw_st)
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(gpio_led, GPIO.OUT)
-    GPIO.setup(gpio_sw_1, GPIO.IN)
-    GPIO.setup(gpio_sw_10, GPIO.IN)
-    GPIO.setup(gpio_sw_60, GPIO.IN)
-    GPIO.setup(gpio_sw_res, GPIO.IN)
-    GPIO.setup(gpio_sw_st, GPIO.IN)
 
 def text1(text):
     #textを1行表示
@@ -102,10 +86,9 @@ def text2(text1, text2):
         draw.text((10, 30), text2, fill="white")
 
 
-##1=Reset 2=Start
-
 def y_n():
     #Reset(n)とStart(y)の入力を受け取る
+    ##1=Reset 2=Start
     status = 0
     pressed_time = time.time()
     while True:
@@ -127,9 +110,9 @@ def y_n():
     return ans
 
 
-#10=shutdown
 def shutdown():
     #1mとstartの同時押しでシャットダウン
+    #10=shutdown
     status = 0
     pressed_time = time.time()
     while True:
@@ -163,6 +146,24 @@ def rec_loop():
             break
             
 
+
+##### mode select #####
+#proc = subprocess.run("ls /media/stada", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
+#usb_name = proc.stdout.decode("utf8")
+#dir_usb = "/media/stada/{}".format(usb_name)
+#usblist = usb_name.split("\n")
+#usb_count = len(usblist)
+#usb_name = usblist[0]
+
+
+#if usb_count == 1:
+#    text2("No USB", "You can only Record")
+#    time.sleep(5)
+#else:
+#    text2("detected USB:", usb_name)
+#    time.sleep(5)
+
+
 while True:
     text2("Mode Select", "Record or Inference")
     print("Mode Select  Record or Inference:")
@@ -179,7 +180,7 @@ while True:
         print("Inference? Yes or No")
         rep = y_n()
         if rep == "y":
-            text2("detected USB:", dir_usb)
+            #text2("detected USB:", usb_name)
             subprocess.run("/usr/bin/python3 /home/stada/DLC/inference.py", shell=True)
             #subprocess.run("python3 inference.py", shell=True)
             cleanup()
