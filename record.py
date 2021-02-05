@@ -1,4 +1,16 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
+
+##########################################
+###                                      
+### 2021/01/28
+### auto-runner of DeepLabCut
+###
+### Masatoshi Abe, Ryoko Kitabatake, 
+### Yuhei Ohtsuka, Yoshiaki Yasumizu
+### Osaka University, Faculty of Medicine
+### Python-kai
+###
+##########################################
 
 
 ####### utils

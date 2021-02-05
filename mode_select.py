@@ -1,4 +1,17 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
+
+##########################################
+###                                      
+### 2021/01/28
+### auto-runner of DeepLabCut
+###
+### Masatoshi Abe, Ryoko Kitabatake, 
+### Yuhei Ohtsuka, Yoshiaki Yasumizu
+### Osaka University, Faculty of Medicine
+### Python-kai
+###
+##########################################
+
 
 import subprocess
 import time
@@ -167,7 +180,7 @@ while True:
         rep = y_n()
         if rep == "y":
             text2("detected USB:", dir_usb)
-            subprocess.run("sudo python3 /home/stada/DLC/inference.py", shell=True)
+            subprocess.run("sudo /usr/bin/python3 /home/stada/DLC/inference.py", shell=True)
             #subprocess.run("python3 inference.py", shell=True)
             cleanup()
             print("Please shutdown")
