@@ -57,15 +57,15 @@ def text2(text1, text2):
 def inference(rec_name):
     text1("Now Inferencing...")
     #videofile_path=dir_usb + "/{}.avi".format(rec_name)
-    videofile_path=["/home/stada/tmp/{}/movie.avi".format(rec_name)]
+    videofile_path="/home/stada/tmp/{}/movie.avi".format(rec_name)
     path_config_file="/home/stada/mouse_tracking-stada-2020-12-23/config.yaml"
-    #deeplabcut.analyze_videos(path_config_file, videofile_path, save_as_csv=True)
-    deeplabcut.analyze_videos(path_config_file, videofile_path, save_as_csv=True, videotype = "avi", shuffle = 1)
+    deeplabcut.analyze_videos(path_config_file, videofile_path, save_as_csv=True)
+    #deeplabcut.analyze_videos(path_config_file, videofile_path, save_as_csv=True, videotype = "avi", shuffle = 1)
     #deeplabcut.analyze_videos_converth5_to_csv("/home/stada/tmp/{}".format(rec_name), '.avi')
     #df = pd.read_csv("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500.csv".format(rec_name))
     #df.to_pickle("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500_meta.pickle".format(rec_name))
     #df.to_hdf("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500.h5".format(rec_name), key='df')
-    #deeplabcut.create_labeled_video(path_config_file, videofile_path, draw_skeleton=True)
+    deeplabcut.create_labeled_video(path_config_file, videofile_path, draw_skeleton=True)
     # deeplabcut.convert_detections2tracklets(path_config_file,videofile_path, videotype="mp4", track_method='skeleton')
     # deeplabcut.convert_raw_tracks_to_h5()
     # deeplabcut.plot_trajectories(path_config_file,videofile_path, videotype="mp4", track_method='skeleton')
@@ -105,4 +105,3 @@ inference(rec_name)
 #usb_name = usblist[0]
 #dir_usb = "/media/stada/{}".format(usb_name)
 subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell = True)
-subprocess.run("sudo umount /media/stada/dlc_stada")
