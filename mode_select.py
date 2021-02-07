@@ -181,7 +181,11 @@ while True:
         rep = y_n()
         if rep == "y":
             #text2("detected USB:", usb_name)
+<<<<<<< HEAD
             subprocess.run("sudo python3 /home/stada/DLC/inference.py", shell=True)
+=======
+            subprocess.run("/usr/bin/python3 /home/stada/DLC/inference.py", shell=True)
+>>>>>>> db6fde6d08d4a966e702aee838204023cc6e8e3c
             #subprocess.run("python3 inference.py", shell=True)
             cleanup()
             print("Please shutdown")
