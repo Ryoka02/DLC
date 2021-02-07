@@ -36,7 +36,7 @@ import deeplabcut
 #### devices set up ####
 serial = i2c(port=1, address=0x3C)
 device = sh1106(serial)
-subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell = True)
+#subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell = True)
 #tables.path.append("/usr/local/lib/python3.6/dist-packages")
 
 
@@ -99,9 +99,12 @@ rec_name = videolist[0]
 inference(rec_name)
 change_fps(rec_name)
 
-#proc = subprocess.run("ls /media/stada", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
-#usb_name = proc.stdout.decode("utf8")
-#usblist = usb_name.split("\n")
-#usb_name = usblist[0]
-#dir_usb = "/media/stada/{}".format(usb_name)
-subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell = True)
+proc = subprocess.run("ls /media/stada", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
+usb_name = proc.stdout.decode("utf8")
+usblist = usb_name.split("\n")
+usb_name = usblist[0]
+dir_usb = "/media/stada/{}".format(usb_name)
+#subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/{}".format(rec_name, usb_name), shell = True)
+subprocess.run("sudo mv /home/stada/tmp/{} /home/stada/temp".format(rec_name), shell = True)
+#subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada1".format(rec_name), shell = True)
+#subprocess.run("sudo umount -l /dev/sda1 /media/stada/dlc_stada1", shell = True)
