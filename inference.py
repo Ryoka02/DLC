@@ -37,7 +37,7 @@ import deeplabcut
 serial = i2c(port=1, address=0x3C)
 device = sh1106(serial)
 subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell = True)
-
+#tables.path.append("/usr/local/lib/python3.6/dist-packages")
 
 
 ######## def ########
@@ -64,8 +64,8 @@ def inference(rec_name):
     #deeplabcut.analyze_videos_converth5_to_csv("/home/stada/tmp/{}".format(rec_name), '.avi')
     #df = pd.read_csv("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500.csv".format(rec_name))
     #df.to_pickle("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500_meta.pickle".format(rec_name))
-    #df.to_hdf("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500.h5".format(rec_name), key='df')
-    #deeplabcut.create_labeled_video(path_config_file, videofile_path, draw_skeleton=True)
+    #df.to_hdf("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500.h5".format(rec_name), key="df", format="table", mode="w")
+    deeplabcut.create_labeled_video(path_config_file, videofile_path, draw_skeleton=True)
     # deeplabcut.convert_detections2tracklets(path_config_file,videofile_path, videotype="mp4", track_method='skeleton')
     # deeplabcut.convert_raw_tracks_to_h5()
     # deeplabcut.plot_trajectories(path_config_file,videofile_path, videotype="mp4", track_method='skeleton')
@@ -97,16 +97,11 @@ videolist = output.split("\n")
 rec_name = videolist[0]
 
 inference(rec_name)
-#change_fps(rec_name)
+change_fps(rec_name)
 
 #proc = subprocess.run("ls /media/stada", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
 #usb_name = proc.stdout.decode("utf8")
 #usblist = usb_name.split("\n")
 #usb_name = usblist[0]
 #dir_usb = "/media/stada/{}".format(usb_name)
-<<<<<<< HEAD
 subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell = True)
-=======
-subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell = True)
-subprocess.run("sudo umount /media/stada/dlc_stada")
->>>>>>> db6fde6d08d4a966e702aee838204023cc6e8e3c
