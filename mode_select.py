@@ -144,6 +144,28 @@ def rec_loop():
             print("Please shutdown")
             shutdown()
             break
+
+
+def led_on_and_off():
+    status = 0
+    pressed_time = time.time()
+    while True:
+        #n = int(input())
+        if (GPIO.input(gpio_sw_res) == 0) & (status == 0) & (time.time() - pressed_time > interval):
+        #if (n == 1) & (status == 0) & (time.time() - pressed_time > interval):
+            status = 1
+            pressed_time = time.time()
+            ans = "y"
+            break
+        elif (GPIO.input(gpio_sw_st) == 0) & (status == 0) & (time.time() - pressed_time > interval):
+        #elif (n == 2) & (status == 0) & (time.time() - pressed_time > interval):
+            status = 1
+            pressed_time = time.time()
+            ans = "n"
+            break
+        else:
+            status = 0
+    return ans
             
 
 

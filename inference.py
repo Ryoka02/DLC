@@ -24,6 +24,7 @@ import subprocess
 from luma.core.interface.serial import i2c
 from luma.core.render import canvas
 from luma.oled.device import sh1106
+import RPi.GPIO as GPIO
 
 ######## dlc ########
 import cv2
@@ -33,10 +34,23 @@ WINDOW_NAME = 'Camera Test'
 import pandas as pd
 import deeplabcut
 
+#### config ####
+gpio_led = 8
+gpio_sw_st = 7
+
+interval = 0.3
+
 #### devices set up ####
 serial = i2c(port=1, address=0x3C)
 device = sh1106(serial)
-#subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell = True)
+GPIO.cleanup(gpio_led)
+GPIO.cleanup(gpio_sw_st)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(gpio_led, GPIO.OUT)
+GPIO.setup(gpio_sw_st, GPIO.IN)
+
+GPIO.output(gpio_led, 1) 
+subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell = True)
 #tables.path.append("/usr/local/lib/python3.6/dist-packages")
 
 
@@ -52,6 +66,14 @@ def text2(text1, text2):
     with canvas(device, dither=True) as draw:
         draw.text((10, 20), text1, fill="white")
         draw.text((10, 30), text2, fill="white")
+
+
+def text3(text1, text2, text3):
+    #text1とtext2を改行して表示
+    with canvas(device, dither=True) as draw:
+        draw.text((10, 20), text1, fill="white")
+        draw.text((10, 30), text2, fill="white")
+        draw.text((10, 40), text2, fill="white")
 
 
 def inference(rec_name):
@@ -88,23 +110,44 @@ def change_fps(name):
     cap.release()     
     text1("Convert finish!")
 
+def get_usb_name():
+    proc = subprocess.run("ls /media/stada", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    usb_name = proc.stdout.decode("utf8")
+    usblist = usb_name.split("\n")
+    usb_name = usblist[0]
+    dir_usb = "/media/stada/{}".format(usb_name)
+
+
+def wait_input_st():
+    status = 0
+    while True:
+        #n = int(input())
+        if (GPIO.input(gpio_sw_st) == 0) & (status == 0):
+        #if (n == 1) & (status == 0) & (time.time() - pressed_time > interval):
+            status = 1
+            break
+        else:
+            status = 0
 
 
 ######## inference ########
-proc = subprocess.run("ls /home/stada/tmp", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
+proc = subprocess.run("ls /home/stada/tmp", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 output = proc.stdout.decode("utf8")
 videolist = output.split("\n")
 rec_name = videolist[0]
 
-inference(rec_name)
-change_fps(rec_name)
 
-proc = subprocess.run("ls /media/stada", stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=True)
-usb_name = proc.stdout.decode("utf8")
-usblist = usb_name.split("\n")
-usb_name = usblist[0]
-dir_usb = "/media/stada/{}".format(usb_name)
-#subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/{}".format(rec_name, usb_name), shell = True)
-subprocess.run("sudo mv /home/stada/tmp/{} /home/stada/temp".format(rec_name), shell = True)
-#subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada1".format(rec_name), shell = True)
-#subprocess.run("sudo umount -l /dev/sda1 /media/stada/dlc_stada1", shell = True)
+try:
+    inference(rec_name)
+    change_fps(rec_name)
+    get_usb_name()
+    #subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/{}".format(rec_name, usb_name), shell = True)
+    #subprocess.run("sudo mv /home/stada/tmp/{} /home/stada/temp".format(rec_name), shell = True)
+    subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell = True)
+    subprocess.run("sudo umount -l /dev/sda1 /media/stada/dlc_stada", shell = True)
+except:
+    GPIO.output(gpio_led, 1)
+    text3("Error", "Press Start button", "Contact to Y.Yasumizu")
+    wait_input_st()
+    
+    
