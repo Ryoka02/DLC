@@ -151,8 +151,8 @@ while True:
         ##################
         now = datetime.datetime.now()
         rec_name = str(now.year)+"-"+str(now.month)+"-"+str(now.day)+"-"+str(now.hour)+"-"+str(now.minute)+"-"+str(now.second)
-        #rectime = min*60
-        rectime = min*1
+        rectime = min*60
+        #rectime = min*1
         record(rectime, rec_name)
 
         break
