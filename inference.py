@@ -82,6 +82,7 @@ def inference(rec_name):
     videofile_path="/home/stada/tmp/{}/movie.avi".format(rec_name)
     path_config_file="/home/stada/mouse_tracking-stada-2020-12-23/config.yaml"
     deeplabcut.analyze_videos(path_config_file, videofile_path, save_as_csv=True)
+    text1("Analyze finish!")
     #deeplabcut.analyze_videos(path_config_file, videofile_path, save_as_csv=True, videotype = "avi", shuffle = 1)
     #deeplabcut.analyze_videos_converth5_to_csv("/home/stada/tmp/{}".format(rec_name), '.avi')
     #df = pd.read_csv("/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500.csv".format(rec_name))
@@ -149,5 +150,4 @@ except:
     GPIO.output(gpio_led, 1)
     text3("Error", "Press Start button", "Contact to Y.Yasumizu")
     wait_input_st()
-    
     
