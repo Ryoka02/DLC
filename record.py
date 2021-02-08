@@ -89,7 +89,7 @@ def text2(text1, text2):
         draw.text((10, 30), text2, fill="white")
 
 
-def record(settime,rec_name):
+def record(settime, rec_name):
     os.makedirs("/home/stada/tmp/{}".format(rec_name), exist_ok=True)
     ## record ====
     GST_STR = 'nvarguscamerasrc \
