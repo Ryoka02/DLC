@@ -145,7 +145,7 @@ try:
     #subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/{}".format(rec_name, usb_name), shell = True)
     #subprocess.run("sudo mv /home/stada/tmp/{} /home/stada/temp".format(rec_name), shell = True)
     subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell = True)
-    subprocess.run("sudo umount -l /dev/sda1 /media/stada/dlc_stada", shell = True)
+    subprocess.run("sudo umount -l /media/stada/dlc_stada", shell = True)
 except:
     GPIO.output(gpio_led, 1)
     text3("Error", "Press Start button", "Contact to Y.Yasumizu")
