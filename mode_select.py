@@ -133,8 +133,16 @@ def rec_loop():
             break
             
 
+def date_count():
+    proc = subprocess.run("ls /home/stada/tmp", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    output = proc.stdout.decode("utf8")
+    videolist = output.split("\n")
+    rec_count = len(videolist) - 1
+    return rec_count            
 
-##### mode select #####
+
+
+######## mode select ########
 while True:
     text2("Mode Select", "Record or Inference")
     rep = y_n()
@@ -145,7 +153,8 @@ while True:
             rec_loop()
             break
     elif rep == "n":
-        text2("Inference?", "Yes or No") 
+        rec_count = date_count()
+        text3(str(rec_count) + " date remain", "Inference?", "Yes or No") 
         rep = y_n()
         if rep == "y":
             text1("Now Inferencing...")
