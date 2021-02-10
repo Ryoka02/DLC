@@ -150,7 +150,7 @@ while True:
         ### deeplabcut ###
         ##################
         now = datetime.datetime.now()
-        rec_name = str(min)+"min-"+str(now.year)+"-"+str(now.month)+"-"+str(now.day)+"-"+str(now.hour)+"-"+str(now.minute)+"-"+str(now.second)
+        rec_name = str(now.year)+"-"+str(now.month)+"-"+str(now.day)+"-"+str(now.hour)+"-"+str(now.minute)+"-"+str(now.second)+"-"+str(min)+"min"
         rectime = min*60
         #rectime = min*1
         record(rectime, rec_name)
