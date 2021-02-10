@@ -129,17 +129,26 @@ except:
     sys.exit()
 
   
-
-######## inference ########    
+######## get rec_name ########    
 proc = subprocess.run("ls /home/stada/tmp", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 output = proc.stdout.decode("utf8")
 videolist = output.split("\n")
 rec_name = videolist[0]
 
+
+######## inference ########
 inference(rec_name)
 change_fps(rec_name)
 subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell=True)
+
+
+######## unmount ########
 subprocess.run("sudo umount -l /media/stada/dlc_stada", shell=True)
+
+try:
+    subprocess.run("sudo rm -r /media/stada/dlc_stada", shell=True)
+except:
+    pass
 
 GPIO.output(gpio_led, 1)
 text2("Inference finish!", "Press Start button")
