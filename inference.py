@@ -47,6 +47,7 @@ GPIO.cleanup(gpio_sw_st)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(gpio_led, GPIO.OUT)
 GPIO.setup(gpio_sw_st, GPIO.IN)
+GPIO.output(gpio_led, 0) 
 subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell=True)
 
 
@@ -75,7 +76,6 @@ def text3(text1, text2, text3):
 
 ##### 起動待ち #####
 text1("Now Analyzing...")
-GPIO.output(gpio_led, 1) 
 import deeplabcut
 ####################
 
