@@ -48,7 +48,6 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(gpio_led, GPIO.OUT)
 GPIO.setup(gpio_sw_st, GPIO.IN)
 GPIO.output(gpio_led, 0) 
-subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell=True)
 
 
 
@@ -116,7 +115,22 @@ def wait_input_st():
 
 
     
-######## inference ########
+######## detect usb ########
+try:
+    subprocess.run("sudo mkdir /media/stada/dlc_stada")
+except:
+    pass
+
+try:
+    subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell=True)
+except:
+    text2("No detected USB", "Press Start button")
+    wait_input_st()
+    sys.exit()
+
+  
+
+######## inference ########    
 proc = subprocess.run("ls /home/stada/tmp", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 output = proc.stdout.decode("utf8")
 videolist = output.split("\n")
