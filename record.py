@@ -143,19 +143,16 @@ while True:
         pressed_time = time.time()
 
     elif (GPIO.input(gpio_sw_st) == 0):
-        GPIO.output(gpio_led, 1) 
-        text2("Now recording...", str(min) + " min")
-
-        ##################
-        ### deeplabcut ###
-        ##################
-        now = datetime.datetime.now()
-        rec_name = str(now.year)+"-"+str(now.month)+"-"+str(now.day)+"-"+str(now.hour)+"-"+str(now.minute)+"-"+str(now.second)+"-"+str(min)+"min"
-        rectime = min*60
-        #rectime = min*1
-        record(rectime, rec_name)
-
-        break
+        if min != 0:
+            GPIO.output(gpio_led, 1) 
+            text2("Now recording...", str(min) + " min")
+            time.sleep(1)
+            now = datetime.datetime.now()
+            rec_name = str(now.year)+"-"+str(now.month)+"-"+str(now.day)+"-"+str(now.hour)+"-"+str(now.minute)+"-"+str(now.second)+"-"+str(min)+"min"
+            rectime = min*60
+            #rectime = min*1
+            record(rectime, rec_name)
+            break
 
     else:
         status = 0
