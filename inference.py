@@ -34,12 +34,12 @@ WINDOW_NAME = 'Camera Test'
 import pandas as pd
 #import deeplabcut(立ち上げ時に時間がかかるため後でインポート)
 
-#### config ####
+######## config ########
 gpio_led = 8
 gpio_sw_st = 7
 interval = 0.3
 
-#### devices set up ####
+######## devices set up ########
 serial = i2c(port=1, address=0x3C)
 device = sh1106(serial)
 GPIO.cleanup(gpio_led)
