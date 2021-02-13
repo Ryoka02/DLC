@@ -33,7 +33,7 @@ from tqdm import tqdm
 WINDOW_NAME = 'Camera Test'
 import pandas as pd
 
-#### config ####
+######## config ########
 gpio_led = 8
 gpio_sw_1 = 21
 gpio_sw_10 = 20
@@ -42,7 +42,7 @@ gpio_sw_res = 12
 gpio_sw_st = 7
 interval = 0.3
 
-#### devices set up ####
+######## devices set up ########
 serial = i2c(port=1, address=0x3C)
 device = sh1106(serial)
 GPIO.cleanup(gpio_led)
