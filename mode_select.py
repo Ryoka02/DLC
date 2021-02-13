@@ -153,23 +153,33 @@ def date_count():
 while True:
     text2("Mode Select", "Record or Inference")
     rep = y_n()
+    
     if rep == "y":
         text2("Record?", "Yes or No") 
         rep = y_n()
         if rep == "y":
             rec_loop()
             break
+            
     elif rep == "n":
         rec_count = date_count()
-        text3(str(rec_count) + " date remain", "Inference?", "Yes or No") 
-        rep = y_n()
-        if rep == "y":
-            text1("Now Inferencing...")
-            subprocess.run("sudo /usr/bin/python3 /home/stada/DLC/inference.py", shell=True)
-            cleanup()
-            text1("Please shutdown")
-            shutdown()
-            break
+        if rec_count >=1:
+            text3(str(rec_count) + " date remain", "Inference?", "Yes or No") 
+            rep = y_n()
+            if rep == "y":
+                text1("Now Inferencing...")
+                subprocess.run("sudo /usr/bin/python3 /home/stada/DLC/inference.py", shell=True)
+                cleanup()
+                text1("Please shutdown")
+                shutdown()
+                break
+        else:
+            text2("No date remain", "shutdown?", "Yes or No")
+            rep = y_n()
+            if rep == "y":
+                text1("Please shutdown")
+                shutdown()
+                
     else:
        status = 0
 
