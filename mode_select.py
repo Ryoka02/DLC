@@ -84,10 +84,17 @@ def text2(text1, text2):
         draw.text((10, 30), text2, fill="white")
     print(text1 + "  " + text2)
 
+    
+def text3(text1, text2, text3):
+    with canvas(device, dither=True) as draw:
+        draw.text((10, 20), text1, fill="white")
+        draw.text((10, 30), text2, fill="white")
+        draw.text((10, 40), text3, fill="white")
+    print(text1 + "  " + text2 + "  " + text3)    
 
+    
 def y_n():
     #Reset(n)とStart(y)の入力を受け取る
-    ##1=Reset 2=Start
     status = 0
     pressed_time = time.time()
     while True:
@@ -125,7 +132,7 @@ def rec_loop():
     while True: 
         subprocess.run("sudo python3 /home/stada/DLC/record.py", shell=True)
         cleanup()
-        text2("Record again?", "Yes or No")
+        text3("Record finish!", "Record again?", "Yes or No")
         again = y_n()
         if again == "n":
             text1("Please shutdown")
