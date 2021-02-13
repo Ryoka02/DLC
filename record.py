@@ -13,19 +13,20 @@
 ##########################################
 
 
-####### utils
+######## utils ########
 import time
 import sys
 import datetime
 import os
+import threading
 
-####### hard
+######## hard ########
 from luma.core.interface.serial import i2c
 from luma.core.render import canvas
 from luma.oled.device import sh1106
 import RPi.GPIO as GPIO 
 
-######## dlc
+######## dlc ########
 import cv2
 import numpy as np
 from tqdm import tqdm
@@ -39,21 +40,17 @@ gpio_sw_10 = 20
 gpio_sw_60 = 16
 gpio_sw_res = 12
 gpio_sw_st = 7
-
 interval = 0.3
-################
 
 #### devices set up ####
 serial = i2c(port=1, address=0x3C)
 device = sh1106(serial)
-
 GPIO.cleanup(gpio_led)
 GPIO.cleanup(gpio_sw_1)
 GPIO.cleanup(gpio_sw_10)
 GPIO.cleanup(gpio_sw_60)
 GPIO.cleanup(gpio_sw_res)
 GPIO.cleanup(gpio_sw_st)
-
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(gpio_led, GPIO.OUT)
 GPIO.setup(gpio_sw_1, GPIO.IN)
@@ -61,32 +58,37 @@ GPIO.setup(gpio_sw_10, GPIO.IN)
 GPIO.setup(gpio_sw_60, GPIO.IN)
 GPIO.setup(gpio_sw_res, GPIO.IN)
 GPIO.setup(gpio_sw_st, GPIO.IN)
-
 GPIO.output(gpio_led, 0) 
-########
-
-min = 0
-status = 0
-pressed_time = time.time()
 
 
+
+######## def ########
 def show_min(min):
     with canvas(device, dither=True) as draw:
         draw.text((10, 20), "Exposure time...", fill="white")
         draw.text((10, 40), str(min) + " min", fill="white")
-
+    print("Exposure time...  " + str(min) + " min")
+        
 
 def text1(text):
-    #textを1行表示
     with canvas(device, dither=True) as draw:
         draw.text((10, 20), text, fill="white")
+    print(text)
 
 
 def text2(text1, text2):
-    #text1とtext2を改行して表示
     with canvas(device, dither=True) as draw:
         draw.text((10, 20), text1, fill="white")
         draw.text((10, 30), text2, fill="white")
+    print(text1 + "  " + text2)
+
+
+def text3(text1, text2, text3):
+    with canvas(device, dither=True) as draw:
+        draw.text((10, 20), text1, fill="white")
+        draw.text((10, 30), text2, fill="white")
+        draw.text((10, 40), text3, fill="white")
+    print(text1 + "  " + text2 + "  " + text3)
 
 
 def record(settime, rec_name):
@@ -110,6 +112,32 @@ def record(settime, rec_name):
     out.release()
     cv2.destroyAllWindows()
     text1("Record finish!")
+
+
+def rec_main(min):
+    now = datetime.datetime.now()
+    rec_name = str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "-" + str(now.hour) + "-" + str(now.minute) + "-" + str(now.second) + "-" + str(min) + "min"
+    rectime = min * 60
+    # rectime = min * 1
+    time.sleep(1)
+    record(rectime, rec_name)    
+
+    
+def time_display(min):
+    GPIO.output(gpio_led, 1)
+    elapsed_time = 0
+    for i in range(min):
+        text2("Now recording...", str(elapsed_time) + " min" + " / " + str(min) + " min")
+        time.sleep(60)
+        # time.sleep(1)
+        elapsed_time += 1
+       
+    
+    
+######## record ########
+min = 0
+status = 0
+pressed_time = time.time()
 
 show_min(min)
 
@@ -144,14 +172,12 @@ while True:
 
     elif (GPIO.input(gpio_sw_st) == 0):
         if min != 0:
-            GPIO.output(gpio_led, 1) 
-            text2("Now recording...", str(min) + " min")
-            time.sleep(1)
-            now = datetime.datetime.now()
-            rec_name = str(now.year)+"-"+str(now.month)+"-"+str(now.day)+"-"+str(now.hour)+"-"+str(now.minute)+"-"+str(now.second)+"-"+str(min)+"min"
-            rectime = min*60
-            #rectime = min*1
-            record(rectime, rec_name)
+            thread1 = threading.Thread(target=rec_main, args=[min])
+            thread2 = threading.Thread(target=time_display, args=[min])
+            thread1.start()
+            thread2.start()
+            thread1.join()
+            thread2.join()
             break
 
     else:
