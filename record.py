@@ -111,7 +111,6 @@ def record(settime, rec_name):
     cap.release()
     out.release()
     cv2.destroyAllWindows()
-    text1("Record finish!")
 
 
 def rec_main(min):
