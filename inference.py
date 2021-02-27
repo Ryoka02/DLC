@@ -74,13 +74,14 @@ def text3(text1, text2, text3):
 
 
 ##### 起動待ち #####
-text1("Now Analyzing...")
+text1("Now Setting...")
 import deeplabcut
 ####################
 
 
 ######## inference def ########
 def inference(rec_name):
+    text1("Now Analyzing...")
     videofile_path="/home/stada/tmp/{}/movie.avi".format(rec_name)
     path_config_file="/home/stada/mouse_tracking-stada-2020-12-23/config.yaml"
     deeplabcut.analyze_videos(path_config_file, videofile_path, save_as_csv=True)
