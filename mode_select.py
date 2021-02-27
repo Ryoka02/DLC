@@ -16,6 +16,7 @@
 ######## utils ########
 import subprocess
 import time
+import datetime
 
 ######## hard ########
 from luma.core.interface.serial import i2c
@@ -122,6 +123,10 @@ def shutdown():
             status = 1
             text1("shutdown...")
             subprocess.run("journalctl -u DLC.service > log.txt", shell=True)
+            now = datetime.datetime.now()
+            log_time = str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "-" + str(now.hour) + "-" + str(now.minute) + "-" + str(now.second)
+            subprocess.run("sudo mkdir /home/stada/log/{}".format(log_time), shell=True)
+            subprocess.run("sudo mv /home/stada/log.txt /home/stada/log/{}".format(log_time), shell=True)
             subprocess.run("sudo shutdown -h now", shell=True)
             break
         else:
