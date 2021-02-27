@@ -130,6 +130,8 @@ def time_display(min):
         time.sleep(60)
         # time.sleep(1)
         elapsed_time += 1
+        if elapsed_time == min:
+            break
        
     
     
@@ -177,7 +179,7 @@ while True:
             thread2.start()
             thread1.join()
             thread2.join()
-            break
+            sys.exit()
 
     else:
         status = 0
