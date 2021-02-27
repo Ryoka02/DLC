@@ -168,7 +168,6 @@ while True:
             text3(str(rec_count) + " date remain", "Inference?", "Yes or No") 
             rep = y_n()
             if rep == "y":
-                text1("Now Inferencing...")
                 subprocess.run("sudo /usr/bin/python3 /home/stada/DLC/inference.py", shell=True)
                 cleanup()
                 text1("Please shutdown")
