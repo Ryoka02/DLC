@@ -121,6 +121,7 @@ def shutdown():
         if (GPIO.input(gpio_sw_1) == 0) & (GPIO.input(gpio_sw_st) == 0) & (status == 0) & (time.time() - pressed_time > interval):
             status = 1
             text1("shutdown...")
+            subprocess.run("journalctl -u DLC.service > log.txt", shell=True)
             subprocess.run("sudo shutdown -h now", shell=True)
             break
         else:
