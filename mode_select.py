@@ -126,7 +126,7 @@ def shutdown():
             now = datetime.datetime.now()
             log_time = str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "-" + str(now.hour) + "-" + str(now.minute) + "-" + str(now.second)
             subprocess.run("sudo mkdir /home/stada/log/{}".format(log_time), shell=True)
-            subprocess.run("sudo mv /home/stada/log.txt /home/stada/log/{}".format(log_time), shell=True)
+            subprocess.run("sudo mv /log.txt /home/stada/log/{}".format(log_time), shell=True)
             subprocess.run("sudo shutdown -h now", shell=True)
             break
         else:
