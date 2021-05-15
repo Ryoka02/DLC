@@ -55,7 +55,7 @@ GPIO.output(gpio_led, 0)
 
 ######## def ########
 def cleanup():
-    serial = i2c(port=1, address=0x3C)
+    serial = i2c(port=8, address=0x3C)
     device = sh1106(serial)
     GPIO.cleanup(gpio_led)
     GPIO.cleanup(gpio_sw_1)
