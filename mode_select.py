@@ -34,7 +34,7 @@ gpio_sw_st = 7
 interval = 0.3
 
 ######## devices set up ########
-serial = i2c(port=1, address=0x3C)
+serial = i2c(port=8, address=0x3C)
 device = sh1106(serial)
 GPIO.cleanup(gpio_led)
 GPIO.cleanup(gpio_sw_1)
