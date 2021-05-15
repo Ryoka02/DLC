@@ -32,7 +32,7 @@ import numpy as np
 from tqdm import tqdm
 WINDOW_NAME = 'Camera Test'
 import pandas as pd
-#import deeplabcutcore(立ち上げ時に時間がかかるため後でインポート)
+#import deeplabcutcore as deeplabcut(立ち上げ時に時間がかかるため後でインポート)
 
 ######## config ########
 gpio_led = 8
@@ -75,7 +75,7 @@ def text3(text1, text2, text3):
 
 ##### 起動待ち #####
 text1("Now Setting...")
-import deeplabcutcore
+import deeplabcutcore as deeplabcut
 ####################
 
 
