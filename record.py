@@ -91,7 +91,7 @@ def text3(text1, text2, text3):
     print(text1 + "  " + text2 + "  " + text3)
 
 
-def record(settime, rec_name):
+def record(settime, rec_name, fps):
     os.makedirs("/home/stada/tmp/{}".format(rec_name), exist_ok=True)
     ## record ====
     GST_STR = 'nvarguscamerasrc \
@@ -100,7 +100,7 @@ def record(settime, rec_name):
         ! videoconvert \
         ! appsink'
     cap = cv2.VideoCapture(GST_STR, cv2.CAP_GSTREAMER)
-    out = cv2.VideoWriter("/home/stada/tmp/{}/movie.avi".format(rec_name), cv2.VideoWriter_fourcc("X","V","I","D"),21, (640, 480))
+    out = cv2.VideoWriter("/home/stada/tmp/{}/movie.avi".format(rec_name), cv2.VideoWriter_fourcc("X","V","I","D"), fps, (640, 480))
     start = time.time()
     pbar = tqdm(total=settime*21)
     while time.time()-start<=settime:
