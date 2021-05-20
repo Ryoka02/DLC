@@ -42,7 +42,7 @@ gpio_sw_res = 12
 gpio_sw_st = 7
 interval = 0.3
 
-fps = 10
+recording_fps = 10
 
 ######## devices set up ########
 serial = i2c(port=8, address=0x3C)
@@ -93,7 +93,7 @@ def text3(text1, text2, text3):
     print(text1 + "  " + text2 + "  " + text3)
 
 
-def record(settime, rec_name, fps=10):
+def record(settime, rec_name, fps):
     os.makedirs("/home/stada/tmp/{}".format(rec_name), exist_ok=True)
     ## record ====
     GST_STR = 'nvarguscamerasrc \
@@ -121,7 +121,7 @@ def rec_main(min):
     rectime = min * 60
     # rectime = min * 1
     time.sleep(1)
-    record(rectime, rec_name, fps=fps)
+    record(rectime, rec_name, recording_fps)
 
     
 def time_display(min):
