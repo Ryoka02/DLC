@@ -42,6 +42,8 @@ gpio_sw_res = 12
 gpio_sw_st = 7
 interval = 0.3
 
+fps = 10
+
 ######## devices set up ########
 serial = i2c(port=8, address=0x3C)
 device = sh1106(serial)
@@ -91,20 +93,20 @@ def text3(text1, text2, text3):
     print(text1 + "  " + text2 + "  " + text3)
 
 
-def record(settime, rec_name, fps):
+def record(settime, rec_name, fps=10):
     os.makedirs("/home/stada/tmp/{}".format(rec_name), exist_ok=True)
     ## record ====
     GST_STR = 'nvarguscamerasrc \
-        ! video/x-raw(memory:NVMM), width=3280, height=2464, format=(string)NV12, framerate=(fraction)30/1 \
+        ! video/x-raw(memory:NVMM), width=640, height=480, format=(string)NV12, framerate=(fraction){}/1 \
         ! nvvidconv ! video/x-raw, width=(int)640, height=(int)480, format=(string)BGRx \
         ! videoconvert \
-        ! appsink'
+        ! appsink'.format(fps)
     cap = cv2.VideoCapture(GST_STR, cv2.CAP_GSTREAMER)
     out = cv2.VideoWriter("/home/stada/tmp/{}/movie.avi".format(rec_name), cv2.VideoWriter_fourcc("X","V","I","D"), fps, (640, 480))
     start = time.time()
-    pbar = tqdm(total=settime*21)
+    pbar = tqdm(total=settime*fps)
     while time.time()-start<=settime:
-        ret, frame = cap.read()
+        _, frame = cap.read()
         out.write(frame)
         pbar.update(1)
     pbar.close()
@@ -119,7 +121,7 @@ def rec_main(min):
     rectime = min * 60
     # rectime = min * 1
     time.sleep(1)
-    record(rectime, rec_name)    
+    record(rectime, rec_name, fps=fps)
 
     
 def time_display(min):
