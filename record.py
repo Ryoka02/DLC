@@ -41,8 +41,7 @@ gpio_sw_60 = 16
 gpio_sw_res = 12
 gpio_sw_st = 7
 interval = 0.3
-
-recording_fps = 10
+fps = int(sys.argv[0])
 
 ######## devices set up ########
 serial = i2c(port=8, address=0x3C)
@@ -121,7 +120,7 @@ def rec_main(min):
     rectime = min * 60
     # rectime = min * 1
     time.sleep(1)
-    record(rectime, rec_name, recording_fps)
+    record(rectime, rec_name, fps)
 
     
 def time_display(min):
