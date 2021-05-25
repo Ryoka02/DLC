@@ -146,8 +146,21 @@ def rec_loop():
             text1("Please shutdown")
             shutdown()
             break
-            
 
+            
+def inf_loop():
+    #推論を連続して行うか、シャットダウンするか
+    while True: 
+        subprocess.run("sudo /usr/bin/python3 /home/stada/DLC/inference.py {}".format(fps), shell=True)
+        cleanup()
+        text3("Inference finish!", "Inference again?", "Yes or No")
+        again = y_n()
+        if again == "n":
+            text1("Please shutdown")
+            shutdown()
+            break
+
+            
 def date_count():
     proc = subprocess.run("ls /home/stada/tmp", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     output = proc.stdout.decode("utf8")
@@ -175,10 +188,7 @@ while True:
             text3(str(rec_count) + " date remain", "Inference?", "Yes or No") 
             rep = y_n()
             if rep == "y":
-                subprocess.run("sudo /usr/bin/python3 /home/stada/DLC/inference.py {}".format(fps), shell=True)
-                cleanup()
-                text1("Please shutdown")
-                shutdown()
+                inf_loop()
                 break
         else:
             text2("No date remain", "shutdown?", "Yes or No")
