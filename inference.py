@@ -83,9 +83,9 @@ import deeplabcutcore as deeplabcut
 ######## inference def ########
 def inference(rec_name):
     text1("Now Analyzing...")
-    videofile_path="/home/stada/tmp/{}/movie.avi".format(rec_name)
+    videofile_path=["/home/stada/tmp/{}".format(rec_name)]
     path_config_file="/home/stada/mouse_tracking-stada-2020-12-23/config.yaml"
-    deeplabcut.analyze_videos(path_config_file, videofile_path, save_as_csv=True)
+    deeplabcut.analyze_videos(path_config_file, videofile_path, videotype='avi', save_as_csv=True)
     text2("Analyze finish!", "Now labeling...")
     deeplabcut.create_labeled_video(path_config_file, videofile_path, draw_skeleton=True)
 
@@ -136,7 +136,6 @@ proc = subprocess.run("ls /home/stada/tmp", stdout=subprocess.PIPE, stderr=subpr
 output = proc.stdout.decode("utf8")
 videolist = output.split("\n")
 rec_name = videolist[0]
-
 
 ######## inference ########
 inference(rec_name)
