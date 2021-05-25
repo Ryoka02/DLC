@@ -33,7 +33,7 @@ gpio_sw_60 = 16
 gpio_sw_res = 12
 gpio_sw_st = 7
 interval = 0.3
-fps = int(sys.argv[0])
+fps = int(sys.argv[1])
 
 ######## devices set up ########
 serial = i2c(port=8, address=0x3C)
@@ -138,7 +138,7 @@ def shutdown():
 def rec_loop():
     #録画を連続して行うか、シャットダウンするか
     while True: 
-        subprocess.run("sudo python3 /home/stada/DLC/record.py {}".format(fps), shell=True)
+        subprocess.run("sudo /usr/bin/python3 /home/stada/DLC/record.py {}".format(fps), shell=True)
         cleanup()
         text3("Record finish!", "Record again?", "Yes or No")
         again = y_n()
