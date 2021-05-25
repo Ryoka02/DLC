@@ -38,6 +38,7 @@ import pandas as pd
 gpio_led = 8
 gpio_sw_st = 7
 interval = 0.3
+fps = int(sys.argv[0])
 
 ######## devices set up ########
 serial = i2c(port=8, address=0x3C)
@@ -89,7 +90,7 @@ def inference(rec_name):
     deeplabcut.create_labeled_video(path_config_file, videofile_path, draw_skeleton=True)
 
 
-def change_fps(name):
+def change_fps(name, fps):
     text2("Label finish!", "Now converting...")
     file_path = "/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500_labeled.mp4".format(name)
     path_out = "/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500_labeled_final.mp4".format(name)
@@ -97,7 +98,7 @@ def change_fps(name):
     w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
-    video = cv2.VideoWriter(path_out, fourcc, 21, (w, h), True)
+    video = cv2.VideoWriter(path_out, fourcc, fps, (w, h), True)
     while True:
       ret, frame = cap.read()
       video.write(frame) 
@@ -139,7 +140,7 @@ rec_name = videolist[0]
 
 ######## inference ########
 inference(rec_name)
-change_fps(rec_name)
+change_fps(rec_name, fps)
 subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell=True)
 
 
