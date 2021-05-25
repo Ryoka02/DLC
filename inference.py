@@ -152,5 +152,4 @@ except:
     pass
 
 GPIO.output(gpio_led, 1)
-text2("Inference finish!", "Press Start button")
 wait_input_st()
