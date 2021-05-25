@@ -150,6 +150,3 @@ try:
     subprocess.run("sudo rm -r /media/stada/dlc_stada", shell=True)
 except:
     pass
-
-GPIO.output(gpio_led, 1)
-wait_input_st()
