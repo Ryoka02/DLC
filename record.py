@@ -41,7 +41,7 @@ gpio_sw_60 = 16
 gpio_sw_res = 12
 gpio_sw_st = 7
 interval = 0.3
-fps = int(sys.argv[0])
+fps = int(sys.argv[1])
 
 ######## devices set up ########
 serial = i2c(port=8, address=0x3C)
