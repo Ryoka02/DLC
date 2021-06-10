@@ -116,7 +116,7 @@ def wait_input_st():
     
 ######## detect usb ########
 try:
-    subprocess.run("sudo mkdir /media/stada/dlc_stada")
+    subprocess.run("sudo mkdir -p /media/stada/dlc_stada")
     print('created a directory : /media/stada/dlc_stada')
 except:
     pass
@@ -147,7 +147,7 @@ if os.path.exists('/media/stada/dlc_stada/{}/movie.avi'.format(rec_name)):
 ######## unmount ########
 subprocess.run("sudo umount -l /media/stada/dlc_stada", shell=True)
 
-try:
-    subprocess.run("sudo rm -r /media/stada/dlc_stada", shell=True)
-except:
-    pass
+# try:
+#     subprocess.run("sudo rm -r /media/stada/dlc_stada", shell=True)
+# except:
+#     pass
