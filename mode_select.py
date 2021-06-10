@@ -162,6 +162,15 @@ def inf_loop():
             shutdown()
             break
 
+def inf_atonce(rec_count):
+    for i in range(rec_count): 
+        subprocess.run("sudo /usr/bin/python3 {}/inference.py {}".format(dir_base, fps), shell=True)
+        cleanup()
+        
+    text2("All inferences have done.", "Please shutdown")
+    shutdown()
+    break
+
             
 def date_count():
     proc = subprocess.run("ls /home/stada/tmp", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -187,13 +196,18 @@ while True:
     elif rep == "n":
         rec_count = date_count()
         if rec_count >=1:
-            text3(str(rec_count) + " date remain", "Inference?", "Yes or No") 
+            text3(str(rec_count) + " movies are remaining", "Inference?", "Yes or No") 
             rep = y_n()
             if rep == "y":
-                inf_loop()
+                text2("Inference at one?", "Yes or No") 
+                rep = y_n()
+                if rep == "y":
+                    inf_atonece(rec_count)
+                else:
+                    inf_loop()
                 break
         else:
-            text2("No date remain", "shutdown?", "Yes or No")
+            text2("No data remains", "shutdown?", "Yes or No")
             rep = y_n()
             if rep == "y":
                 text1("Please shutdown")
