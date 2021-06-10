@@ -36,6 +36,8 @@ gpio_sw_st = 7
 interval = 0.3
 fps = int(sys.argv[1])
 
+version = "210610"
+
 ######## devices set up ########
 serial = i2c(port=8, address=0x3C)
 device = sh1106(serial)
@@ -182,7 +184,7 @@ def date_count():
 
 ######## mode select ########
 while True:
-    text2("Mode Select", "Record or Inference")
+    text3("verion : {}".format(version), "Mode Select", "Record or Inference")
     rep = y_n()
     
     if rep == "y":
