@@ -78,8 +78,6 @@ text1("Now Setting...")
 import deeplabcutcore as deeplabcut
 ####################
 
-dir_base = os.path.realpath(os.path.dirname(__file__))
-
 ######## inference def ########
 def inference(rec_name):
     text1("Now Analyzing...")
@@ -140,7 +138,7 @@ rec_name = videolist[0]
 ######## inference ########
 inference(rec_name)
 change_fps(rec_name, fps)
-subprocess.run("sudo cp /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell=True)
+subprocess.run("sudo cp -r /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell=True)
 
 ######## delete files from Jetson ########
 if os.path.exists('/media/stada/dlc_stada/{}/movie.avi'.format(rec_name)):
