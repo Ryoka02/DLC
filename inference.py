@@ -142,7 +142,7 @@ subprocess.run("sudo cp -r /home/stada/tmp/{} /media/stada/dlc_stada".format(rec
 
 ######## delete files from Jetson ########
 if os.path.exists('/media/stada/dlc_stada/{}/movie.avi'.format(rec_name)):
-    subprocess.run('sudo rm -r /home/stada/tmp/{}'.format(rec_name))
+    subprocess.run('sudo rm -r /home/stada/tmp/{}'.format(rec_name), shell=True)
 
 ######## unmount ########
 subprocess.run("sudo umount -l /media/stada/dlc_stada", shell=True)
