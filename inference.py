@@ -51,7 +51,6 @@ GPIO.setup(gpio_sw_st, GPIO.IN)
 GPIO.output(gpio_led, 0) 
 
 
-
 ######## display def ########
 def text1(text):
     with canvas(device, dither=True) as draw:
@@ -79,6 +78,7 @@ text1("Now Setting...")
 import deeplabcutcore as deeplabcut
 ####################
 
+dir_base = os.path.realpath(os.path.dirname(__file__))
 
 ######## inference def ########
 def inference(rec_name):
@@ -119,11 +119,13 @@ def wait_input_st():
 ######## detect usb ########
 try:
     subprocess.run("sudo mkdir /media/stada/dlc_stada")
+    print('created a directory : /media/stada/dlc_stada')
 except:
     pass
 
 try:
     subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell=True)
+    print('USB mouted.')
 except:
     text2("No detected USB", "Press Start button")
     wait_input_st()

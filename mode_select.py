@@ -18,6 +18,7 @@ import subprocess
 import time
 import datetime
 import sys
+import os
 
 ######## hard ########
 from luma.core.interface.serial import i2c
@@ -53,9 +54,10 @@ GPIO.setup(gpio_sw_res, GPIO.IN)
 GPIO.setup(gpio_sw_st, GPIO.IN)
 GPIO.output(gpio_led, 0) 
 
+######## get environments ########
+dir_base = os.path.realpath(os.path.dirname(__file__))
 
-
-######## def ########
+######## functions ########
 def cleanup():
     serial = i2c(port=8, address=0x3C)
     device = sh1106(serial)
@@ -138,7 +140,7 @@ def shutdown():
 def rec_loop():
     #録画を連続して行うか、シャットダウンするか
     while True: 
-        subprocess.run("sudo /usr/bin/python3 /home/stada/DLC/record.py {}".format(fps), shell=True)
+        subprocess.run("sudo /usr/bin/python3 {}/record.py {}".format(dir_base, fps), shell=True)
         cleanup()
         text3("Record finish!", "Record again?", "Yes or No")
         again = y_n()
@@ -151,7 +153,7 @@ def rec_loop():
 def inf_loop():
     #推論を連続して行うか、シャットダウンするか
     while True: 
-        subprocess.run("sudo /usr/bin/python3 /home/stada/DLC/inference.py {}".format(fps), shell=True)
+        subprocess.run("sudo /usr/bin/python3 {}/inference.py {}".format(dir_base, fps), shell=True)
         cleanup()
         text3("Inference finish!", "Inference again?", "Yes or No")
         again = y_n()
