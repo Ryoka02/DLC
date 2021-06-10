@@ -200,10 +200,10 @@ while True:
             text3(str(rec_count) + " movies are remaining", "Inference?", "Yes or No") 
             rep = y_n()
             if rep == "y":
-                text2("Inference at one?", "Yes or No") 
+                text2("Inference at once?", "Yes or No") 
                 rep = y_n()
                 if rep == "y":
-                    inf_atonece(rec_count)
+                    inf_atonce(rec_count)
                 else:
                     inf_loop()
                 break
