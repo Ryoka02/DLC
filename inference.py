@@ -103,6 +103,8 @@ def change_fps(name, fps):
       if not ret:break
     cap.release()
 
+    os.remove(file_path)
+
 
 def wait_input_st():
     status = 0
