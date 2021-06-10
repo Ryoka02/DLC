@@ -169,7 +169,6 @@ def inf_atonce(rec_count):
         
     text2("All inferences have done.", "Please shutdown")
     shutdown()
-    break
 
             
 def date_count():
