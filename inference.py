@@ -115,7 +115,6 @@ def wait_input_st():
         else:
             status = 0
 
-
     
 ######## detect usb ########
 try:
@@ -130,7 +129,6 @@ except:
     wait_input_st()
     sys.exit()
 
-  
 ######## get rec_name ########    
 proc = subprocess.run("ls /home/stada/tmp", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 output = proc.stdout.decode("utf8")
@@ -140,8 +138,11 @@ rec_name = videolist[0]
 ######## inference ########
 inference(rec_name)
 change_fps(rec_name, fps)
-subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell=True)
+subprocess.run("sudo cp /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell=True)
 
+######## delete files from Jetson ########
+if os.path.exists('/media/stada/dlc_stada/{}/movie.avi'.format(rec_name)):
+    subprocess.run('rm -r /home/stada/tmp/{}'.format(rec_name))
 
 ######## unmount ########
 subprocess.run("sudo umount -l /media/stada/dlc_stada", shell=True)
