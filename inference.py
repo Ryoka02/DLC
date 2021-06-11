@@ -51,7 +51,6 @@ GPIO.setup(gpio_sw_st, GPIO.IN)
 GPIO.output(gpio_led, 0) 
 
 
-
 ######## display def ########
 def text1(text):
     with canvas(device, dither=True) as draw:
@@ -79,7 +78,6 @@ text1("Now Setting...")
 import deeplabcutcore as deeplabcut
 ####################
 
-
 ######## inference def ########
 def inference(rec_name):
     text1("Now Analyzing...")
@@ -105,6 +103,8 @@ def change_fps(name, fps):
       if not ret:break
     cap.release()
 
+    os.remove(file_path)
+
 
 def wait_input_st():
     status = 0
@@ -115,22 +115,22 @@ def wait_input_st():
         else:
             status = 0
 
-
     
 ######## detect usb ########
 try:
-    subprocess.run("sudo mkdir /media/stada/dlc_stada")
+    subprocess.run("sudo mkdir -p /media/stada/dlc_stada")
+    print('created a directory : /media/stada/dlc_stada')
 except:
     pass
 
 try:
     subprocess.run("sudo mount /dev/sda1 /media/stada/dlc_stada", shell=True)
+    print('USB mouted.')
 except:
     text2("No detected USB", "Press Start button")
     wait_input_st()
     sys.exit()
 
-  
 ######## get rec_name ########    
 proc = subprocess.run("ls /home/stada/tmp", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 output = proc.stdout.decode("utf8")
@@ -140,13 +140,16 @@ rec_name = videolist[0]
 ######## inference ########
 inference(rec_name)
 change_fps(rec_name, fps)
-subprocess.run("sudo mv /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell=True)
+subprocess.run("sudo cp -r /home/stada/tmp/{} /media/stada/dlc_stada".format(rec_name), shell=True)
 
+######## delete files from Jetson ########
+if os.path.exists('/media/stada/dlc_stada/{}/movie.avi'.format(rec_name)):
+    subprocess.run('sudo rm -r /home/stada/tmp/{}'.format(rec_name), shell=True)
 
 ######## unmount ########
 subprocess.run("sudo umount -l /media/stada/dlc_stada", shell=True)
 
-try:
-    subprocess.run("sudo rm -r /media/stada/dlc_stada", shell=True)
-except:
-    pass
+# try:
+#     subprocess.run("sudo rm -r /media/stada/dlc_stada", shell=True)
+# except:
+#     pass
