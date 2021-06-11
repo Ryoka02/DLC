@@ -120,24 +120,42 @@ def y_n():
     return ans
 
 
-def shutdown():
-    #1mとstartの同時押しでシャットダウン
+def shutdown_reboot():
+    #1mとstartの同時押しでシャットダウンか再起動
     status = 0
     pressed_time = time.time()
-    while True:
-        if (GPIO.input(gpio_sw_1) == 0) & (GPIO.input(gpio_sw_st) == 0) & (status == 0) & (time.time() - pressed_time > interval):
-            status = 1
-            text1("shutdown...")
-            subprocess.run("journalctl -u DLC.service > log.txt", shell=True)
-            now = datetime.datetime.now()
-            log_time = str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "-" + str(now.hour) + "-" + str(now.minute) + "-" + str(now.second)
-            subprocess.run("sudo mkdir /home/stada/log/{}".format(log_time), shell=True)
-            subprocess.run("sudo mv /log.txt /home/stada/log/{}".format(log_time), shell=True)
-            subprocess.run("sudo shutdown -h now", shell=True)
-            break
-        else:
-            status = 0
-
+    text2("Mode select", "Shutdown or Reboot")
+    rep = y_n()
+    if rep == "y":
+        text1("Please shutdown")        
+        while True:
+            if (GPIO.input(gpio_sw_1) == 0) & (GPIO.input(gpio_sw_st) == 0) & (status == 0) & (time.time() - pressed_time > interval):
+                status = 1
+                text1("shutdown...")
+                subprocess.run("journalctl -u DLC.service > log.txt", shell=True)
+                now = datetime.datetime.now()
+                log_time = str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "-" + str(now.hour) + "-" + str(now.minute) + "-" + str(now.second)
+                subprocess.run("sudo mkdir /home/stada/log/{}".format(log_time), shell=True)
+                subprocess.run("sudo mv /log.txt /home/stada/log/{}".format(log_time), shell=True)
+                subprocess.run("sudo shutdown -h now", shell=True)
+                break
+            else:
+                status = 0
+    else:
+        text1("Please reboot")
+        while True:
+            if (GPIO.input(gpio_sw_1) == 0) & (GPIO.input(gpio_sw_st) == 0) & (status == 0) & (time.time() - pressed_time > interval):
+                status = 1
+                text1("reboot...")
+                subprocess.run("journalctl -u DLC.service > log.txt", shell=True)
+                now = datetime.datetime.now()
+                log_time = str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "-" + str(now.hour) + "-" + str(now.minute) + "-" + str(now.second)
+                subprocess.run("sudo mkdir /home/stada/log/{}".format(log_time), shell=True)
+                subprocess.run("sudo mv /log.txt /home/stada/log/{}".format(log_time), shell=True)
+                subprocess.run("sudo reboot", shell=True)
+                break
+            else:
+                status = 0
 
 def rec_loop():
     #録画を連続して行うか、シャットダウンするか
@@ -147,8 +165,7 @@ def rec_loop():
         text3("Record finish!", "Record again?", "Yes or No")
         again = y_n()
         if again == "n":
-            text1("Please shutdown")
-            shutdown()
+            shutdown_reboot()
             break
 
             
@@ -160,17 +177,25 @@ def inf_loop():
         text3("Inference finish!", "Inference again?", "Yes or No")
         again = y_n()
         if again == "n":
-            text1("Please shutdown")
-            shutdown()
+            shutdown_reboot()
             break
 
+            
 def inf_atonce(rec_count):
     for i in range(rec_count): 
         subprocess.run("sudo /usr/bin/python3 {}/inference.py {}".format(dir_base, fps), shell=True)
         cleanup()
         
-    text2("All inferences have done.", "Please shutdown")
-    shutdown()
+    text2("All inferences have done.", "Please press Start")
+    status = 0
+    pressed_time = time.time()
+    while True:
+        if (GPIO.input(gpio_sw_st) == 0) & (status == 0) & (time.time() - pressed_time > interval):
+            status = 1
+            shutdown_reboot()
+            break
+        else:
+            status = 0
 
             
 def date_count():
@@ -208,11 +233,10 @@ while True:
                     inf_loop()
                 break
         else:
-            text2("No data remains", "shutdown?", "Yes or No")
+            text2("No data remains", "Shutdown or Reboot?", "Yes or No")
             rep = y_n()
             if rep == "y":
-                text1("Please shutdown")
-                shutdown()
+                shutdown_reboot()
                 
     else:
        status = 0
