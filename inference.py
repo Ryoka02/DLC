@@ -82,7 +82,7 @@ import deeplabcutcore as deeplabcut
 def inference(rec_name):
     text1("Now Analyzing...")
     videofile_path=["/home/stada/tmp/{}".format(rec_name)]
-    path_config_file="/home/stada/mouse_tracking-stada-2020-12-23/config.yaml"
+    path_config_file="/home/stada/2021-08-06-yotsuka-2021-08-06/config.yaml"
     deeplabcut.analyze_videos(path_config_file, videofile_path, videotype='avi', save_as_csv=True)
     text2("Analyze finish!", "Now labeling...")
     deeplabcut.create_labeled_video(path_config_file, videofile_path, draw_skeleton=True)
@@ -90,8 +90,8 @@ def inference(rec_name):
 
 def change_fps(name, fps):
     text2("Label finish!", "Now converting...")
-    file_path = "/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500_labeled.mp4".format(name)
-    path_out = "/home/stada/tmp/{}/movieDLC_resnet50_mouse_trackingDec23shuffle1_5500_labeled_final.mp4".format(name)
+    file_path = "/home/stada/tmp/{}/movieDLC_resnet50_2021-08-06Aug6shuffle1_5000_labeled.mp4".format(name)
+    path_out = "/home/stada/tmp/{}/movieDLC_resnet50_2021-08-06Aug6shuffle1_5000_labeled_final.mp4".format(name)
     cap = cv2.VideoCapture(file_path)
     w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
