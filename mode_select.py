@@ -233,7 +233,7 @@ while True:
                     inf_loop()
                 break
         else:
-            text2("No data remains", "Shutdown or Reboot?", "Yes or No")
+            text3("No data remains", "Shutdown or Reboot?", "Yes or No")
             rep = y_n()
             if rep == "y":
                 shutdown_reboot()
