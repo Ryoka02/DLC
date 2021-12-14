@@ -243,7 +243,7 @@ while True:
 
 
 
-######## cleanup ########
+######## clean up ########
 GPIO.cleanup(gpio_led)
 GPIO.cleanup(gpio_sw_1)
 GPIO.cleanup(gpio_sw_10)
